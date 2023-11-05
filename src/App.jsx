@@ -37,6 +37,18 @@ function App() {
     setImageFileNames(updatedImages);
   };
 
+  const handleOnDragEnd = (result) => {
+    console.log("Drag result:", result);
+
+    // if (!result.destination) return;
+
+    // const items = Array.from(imageFileNames);
+    // const [reorderedItem] = items.splice(result.source.index, 1);
+    // items.splice(result.destination.index, 0, reorderedItem);
+
+    // setImageFileNames(items);
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-200">
       <div className=" p-4 rounded-md bg-white">
@@ -47,7 +59,6 @@ function App() {
             <div className="text-2xl">Gallery</div>
           )}
           <div>
-            {/* Delete Button */}
             {selectedImages.length > 0 && (
               <div>
                 <button
@@ -60,7 +71,7 @@ function App() {
             )}
           </div>
         </div>
-        <DragDropContext>
+        <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId="images">
             {(provided) => (
               <div
@@ -72,7 +83,7 @@ function App() {
                   return (
                     <Draggable
                       key={index}
-                      draggableId={imageName}
+                      draggableId={index.toString()}
                       index={index}
                     >
                       {(provided) => (
