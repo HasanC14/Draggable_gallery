@@ -7,31 +7,31 @@ import { useState } from "react";
 function App() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [imageFileNames, setImageFileNames] = useState([
-    "image-1.webp",
-    "image-2.webp",
-    "image-3.webp",
-    "image-4.webp",
-    "image-5.webp",
-    "image-6.webp",
-    "image-7.webp",
-    "image-8.webp",
-    "image-9.webp",
-    "image-10.jpeg",
-    "image-11.jpeg",
+    { id: "1", name: "image-1.webp" },
+    { id: "2", name: "image-2.webp" },
+    { id: "3", name: "image-3.webp" },
+    { id: "4", name: "image-4.webp" },
+    { id: "5", name: "image-5.webp" },
+    { id: "6", name: "image-6.webp" },
+    { id: "7", name: "image-7.webp" },
+    { id: "8", name: "image-8.webp" },
+    { id: "9", name: "image-9.webp" },
+    { id: "10", name: "image-10.jpeg" },
+    { id: "11", name: "image-11.jpeg" },
   ]);
 
-  const toggleImageSelection = (index) => {
-    const isSelected = selectedImages.includes(index);
+  const toggleImageSelection = (id) => {
+    const isSelected = selectedImages.includes(id);
     if (isSelected) {
-      setSelectedImages(selectedImages.filter((i) => i !== index));
+      setSelectedImages(selectedImages.filter((i) => i !== id));
     } else {
-      setSelectedImages([...selectedImages, index]);
+      setSelectedImages([...selectedImages, id]);
     }
   };
 
   const deleteSelectedImages = () => {
     const updatedImages = imageFileNames.filter(
-      (_, index) => !selectedImages.includes(index)
+      (image) => !selectedImages.includes(image.id)
     );
     setSelectedImages([]);
     setImageFileNames(updatedImages);
@@ -60,7 +60,7 @@ function App() {
             {selectedImages.length > 0 && (
               <div>
                 <button
-                  className="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
+                  className="bg-gray-400 hover-bg-gray-600 text-white font-bold py-2 px-4 rounded"
                   onClick={deleteSelectedImages}
                 >
                   <FontAwesomeIcon icon={faTrash} />
@@ -77,11 +77,11 @@ function App() {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {imageFileNames.map((imageName, index) => {
+                {imageFileNames.map((image, index) => {
                   return (
                     <Draggable
-                      key={index}
-                      draggableId={index.toString()}
+                      key={image.id.toString()} // Use the unique ID as the key
+                      draggableId={image.id.toString()} // Use the unique ID as the draggableId
                       index={index}
                     >
                       {(provided) => (
@@ -94,11 +94,11 @@ function App() {
                           {...provided.dragHandleProps}
                         >
                           <img
-                            src={`/assets/${imageName}`}
-                            alt={`Image ${index}`}
+                            src={`/assets/${image.name}`}
+                            alt={`Image ${image.id}`}
                             className="w-full h-full object-cover"
                           />
-                          {selectedImages.includes(index) && (
+                          {selectedImages.includes(image.id) && (
                             <div className="selected-overlay">
                               <FontAwesomeIcon
                                 icon={faCheck}
@@ -109,7 +109,7 @@ function App() {
                           <div className="absolute inset-0 bg-black opacity-0 hover:opacity-50 transition-opacity flex items-start">
                             <button
                               className="absolute top-0 left-0 p-2 bg-white"
-                              onClick={() => toggleImageSelection(index)}
+                              onClick={() => toggleImageSelection(image.id)}
                             >
                               <FontAwesomeIcon icon={faCheck} />
                             </button>
