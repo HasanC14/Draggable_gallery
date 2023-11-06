@@ -38,15 +38,13 @@ function App() {
   };
 
   const handleOnDragEnd = (result) => {
-    console.log("Drag result:", result);
+    if (!result.destination) return;
 
-    // if (!result.destination) return;
+    const items = Array.from(imageFileNames);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
 
-    // const items = Array.from(imageFileNames);
-    // const [reorderedItem] = items.splice(result.source.index, 1);
-    // items.splice(result.destination.index, 0, reorderedItem);
-
-    // setImageFileNames(items);
+    setImageFileNames(items);
   };
 
   return (
@@ -96,7 +94,7 @@ function App() {
                           {...provided.dragHandleProps}
                         >
                           <img
-                            src={`../Assets/${imageName}`}
+                            src={`/assets/${imageName}`}
                             alt={`Image ${index}`}
                             className="w-full h-full object-cover"
                           />
