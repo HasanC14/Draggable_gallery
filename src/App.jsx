@@ -46,13 +46,30 @@ function App() {
 
     setImageFileNames(items);
   };
+  const toggleSelectAll = () => {
+    if (selectedImages.length === imageFileNames.length) {
+      setSelectedImages([]);
+    } else {
+      setSelectedImages(imageFileNames.map((image) => image.id));
+    }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-200">
-      <div className=" p-4 rounded-md bg-white">
-        <div className="flex justify-between items-center border-b-2 border-gray-500 my-4 pb-4">
+      <div className="p-4 rounded-md bg-white">
+        <div className="flex justify-between md:items-center items-start md:space-y-0 space-y-4 border-b-2 border-gray-500 my-4 pb-4 md:flex-row flex-col">
           {selectedImages.length > 0 ? (
-            <div className="text-2xl">{selectedImages.length} Selected</div>
+            <div className="flex space-x-4">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={selectedImages.length === imageFileNames.length}
+                  onChange={toggleSelectAll}
+                />
+                {/* <div className="text-2xl ml-2">Select All</div> */}
+              </div>
+              <div className="text-2xl">{selectedImages.length} Selected</div>
+            </div>
           ) : (
             <div className="text-2xl">Gallery</div>
           )}
@@ -60,7 +77,7 @@ function App() {
             {selectedImages.length > 0 && (
               <div>
                 <button
-                  className="bg-gray-400 hover-bg-gray-600 text-white font-bold py-2 px-4 rounded"
+                  className="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
                   onClick={deleteSelectedImages}
                 >
                   <FontAwesomeIcon icon={faTrash} />
@@ -73,7 +90,7 @@ function App() {
           <Droppable droppableId="images">
             {(provided) => (
               <div
-                className="grid grid-cols-5 grid-rows-3 gap-4 max-w-5xl mx-auto "
+                className="grid md:grid-cols-5 grid-cols-4 md:grid-rows-3 grid-rows-4 gap-4 max-w-5xl mx-auto "
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
@@ -96,7 +113,7 @@ function App() {
                           <img
                             src={`/assets/${image.name}`}
                             alt={`Image ${image.id}`}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-fill"
                           />
                           {selectedImages.includes(image.id) && (
                             <div className="selected-overlay">
